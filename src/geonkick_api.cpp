@@ -45,6 +45,7 @@ GeonkickApi::GeonkickApi()
         , kitName{"Unknown"}
         , kitAuthor{"Author"}
         , clipboardPercussion{nullptr}
+        , undoStackIndex{0}
 {
         setupDataPaths();
 }
@@ -87,6 +88,7 @@ bool GeonkickApi::init()
         // Set the first the percussion by default to be controllable.
 	geonkick_set_current_percussion(geonkickApi, 0);
 	geonkick_enable_synthesis(geonkickApi, true);
+        saveToUndoStack();
         return true;
 }
 
@@ -1683,4 +1685,25 @@ PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
 size_t GeonkickApi::numberOfPresetFolders() const
 {
         return presetsFoldersList.size();
+}
+
+void GeonkickApi::undoState()
+{
+        if (undoStackIndex > 0)
+                undoStackIndex--;
+
+        if (undoStackIndex < undoStack.size()) {
+                setKitState(undoStack.at(undoStackIndex));
+                notifyUpdateGui();
+                notifyUpdateParameters();
+                notifyKitUpdated();
+        }
+}
+
+void GeonkickApi::saveToUndoStack()
+{
+        if (undoStack.size() == GKICK_UNDO_STACK_SIZE)
+                undoStack.pop_front();
+        undoStack.push_back(getKitState());
+        undoStackIndex = undoStack.size() - 1;
 }

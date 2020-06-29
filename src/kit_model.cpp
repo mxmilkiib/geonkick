@@ -243,6 +243,7 @@ void KitModel::addNewPercussion()
         auto model = new PercussionModel(this, newId);
         percussionsList.push_back(model);
         action percussionAdded(model);
+        geonkickApi->saveToUndoStack();
 }
 
 void KitModel::copyPercussion(PercussionIndex index)
@@ -263,6 +264,7 @@ void KitModel::copyPercussion(PercussionIndex index)
                 auto model = new PercussionModel(this, newId);
                 percussionsList.push_back(model);
                 action percussionAdded(model);
+                geonkickApi->saveToUndoStack();
         }
 }
 
@@ -282,6 +284,7 @@ void KitModel::removePercussion(PercussionIndex index)
                                 geonkickApi->setCurrentPercussion(percussionId(0));
                                 action selectPercussion(0);
                         }
+                        geonkickApi->saveToUndoStack();
                         break;
                 }
         }
@@ -300,6 +303,7 @@ void KitModel::moveSelectedPercussion(bool down)
                         percussionsList[currentIndex]->setId(percussionId(currentIndex));
                         percussionsList[nextIndex]->setId(percussionId(nextIndex));
                         selectPercussion(nextIndex);
+                        geonkickApi->saveToUndoStack();
                 }
         }
 }
@@ -345,4 +349,9 @@ const std::vector<PercussionModel*>& KitModel::percussionModels() const
 GeonkickApi* KitModel::getApi() const
 {
         return geonkickApi;
+}
+
+void KitModel::saveToUndo()
+{
+        geonkickApi->saveToUndoStack();
 }

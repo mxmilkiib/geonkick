@@ -70,6 +70,7 @@ Filter::Filter(GeonkickWidget *parent)
         cutOffKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         cutOffKnob->setRange(20, 20000);
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), this, cutOffChanged(val));
+        RK_ACT_BIND(cutOffKnob, released, RK_ACT_ARGS(), this, released());
 
         resonanceKnob = new Knob(this);
 	resonanceKnob->setRangeType(Knob::RangeType::Logarithmic);
@@ -81,6 +82,7 @@ Filter::Filter(GeonkickWidget *parent)
         resonanceKnob->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
         resonanceKnob->setRange(0.01, 10);
         RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), this, resonanceChanged(val));
+        RK_ACT_BIND(resonanceKnob, released, RK_ACT_ARGS(), this, released());
 
         int x = width() / 2  - 3;
         int y = height() - 26;
@@ -120,6 +122,7 @@ Filter::Filter(GeonkickWidget *parent)
 void Filter::enable(bool b)
 {
         filterCheckbox->setPressed(b);
+        action released();
 }
 
 bool Filter::isEnabled() const
@@ -158,7 +161,8 @@ void Filter::setFilterType(GeonkickApi::FilterType type, bool b)
 {
         if (b) {
                 setType(type);
-                typeChanged(type);
+                action typeChanged(type);
+                action released();
         }
 }
 

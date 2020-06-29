@@ -54,6 +54,10 @@ public:
                valueUpdated(double v),
                RK_ARG_TYPE(double),
                RK_ARG_VAL(v));
+   RK_DECL_ACT(released,
+               released(),
+               RK_ARG_TYPE(),
+               RK_ARG_VAL());
  protected:
    void paintWidget(RkPaintEvent *event) final;
    void mouseButtonPressEvent(RkMouseEvent *event) final;

@@ -73,6 +73,7 @@ class Oscillator: public RkObject
                            double y);
   void setSample(const std::string &file);
   std::string samplesPath() const;
+  void saveToUndo();
 
   RK_DECL_ACT(amplitudeUpdated,
               amplitudeUpdated(double v),

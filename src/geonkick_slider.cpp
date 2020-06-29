@@ -98,6 +98,7 @@ void GeonkickSlider::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         RK_UNUSED(event);
         isSelected = false;
+        action released();
 }
 
 int GeonkickSlider::calculateValue(int x, int y)

@@ -67,6 +67,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    std::shared_ptr<RkImage> kickGraphImage;
    RkImage envelopeImage;
    KickGraph *kickGraphics;
+   bool pointMoved;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

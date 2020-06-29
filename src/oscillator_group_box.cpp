@@ -102,6 +102,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
                 fmCheckbox->setPressedImage(RkImage(95, 11, RK_IMAGE_RC(fm_radio_active)));
                 fmCheckbox->setUnpressedImage(RkImage(95, 11, RK_IMAGE_RC(fm_radio)));
                 RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
+                RK_ACT_BIND(fmCheckbox, released, RK_ACT_ARGS(), oscillator, saveToUndo());
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
                 oscillatorCheckbox->setFixedSize(87, 11);
                 oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(),
@@ -224,6 +225,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                     RK_ACT_ARGS(double val),
                     oscillator,
                     setAmplitude(val));
+        RK_ACT_BIND(envelopeAmplitudeKnob, released, RK_ACT_ARGS(), oscillator, saveToUndo());
 
         if (oscillator->type() == Oscillator::Type::Noise) {
                 noiseWhiteButton = new GeonkickButton(amplitudeEnvelopeBox);
@@ -257,7 +259,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 seedSlider->setPosition(noiseBrownianButton->x() - 13, noiseBrownianButton->y() + 55);
                 seedSlider->show();
                 RK_ACT_BIND(seedSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorSeed(value));
-
+                RK_ACT_BIND(seedSlider, released, RK_ACT_ARGS(), oscillator, saveToUndo());
         } else {
                 frequencyAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
                 frequencyAmplitudeKnob->setRangeType(Knob::RangeType::Logarithmic);
@@ -271,6 +273,11 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                             RK_ACT_ARGS(double val),
                             oscillator,
                             setFrequency(val));
+                RK_ACT_BIND(frequencyAmplitudeKnob,
+                            released,
+                            RK_ACT_ARGS(),
+                            oscillator,
+                            saveToUndo());
                 frequencyAmplitudeKnob->show();
         }
 }
@@ -292,6 +299,8 @@ void OscillatorGroupBox::createFilterGroupBox()
                     oscillator, setFilterQFactor(val));
         RK_ACT_BIND(filterBox, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type),
                     oscillator, setFilterType(type));
+        RK_ACT_BIND(filterBox, released, RK_ACT_ARGS(),
+                    oscillator, saveToUndo());
 }
 
 void OscillatorGroupBox::setSineWave(bool pressed)
@@ -302,6 +311,7 @@ void OscillatorGroupBox::setSineWave(bool pressed)
                 sawtoothButton->setPressed(false);
                 sampleButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Sine);
+                oscillator->saveToUndo();
         }
 }
 
@@ -313,6 +323,7 @@ void OscillatorGroupBox::setSquareWave(bool pressed)
                 sawtoothButton->setPressed(false);
                 sampleButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Square);
+                oscillator->saveToUndo();
         }
 }
 
@@ -324,6 +335,7 @@ void OscillatorGroupBox::setTriangleWave(bool pressed)
                 sawtoothButton->setPressed(false);
                 sampleButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Triangle);
+                oscillator->saveToUndo();
         }
 }
 
@@ -335,6 +347,7 @@ void OscillatorGroupBox::setSawtoothWave(bool pressed)
                 triangleButton->setPressed(false);
                 sampleButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Sawtooth);
+                oscillator->saveToUndo();
         }
 }
 
@@ -346,6 +359,7 @@ void OscillatorGroupBox::setSampleFunction(bool pressed)
                 triangleButton->setPressed(false);
                 sawtoothButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Sample);
+                oscillator->saveToUndo();
         }
 }
 
@@ -364,6 +378,7 @@ void OscillatorGroupBox::setNoiseWhite(bool pressed)
         if (pressed) {
                 noiseBrownianButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::NoiseWhite);
+                oscillator->saveToUndo();
         }
 }
 
@@ -372,6 +387,7 @@ void OscillatorGroupBox::setNoiseBrownian(bool pressed)
         if (pressed) {
                 noiseWhiteButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::NoiseBrownian);
+                oscillator->saveToUndo();
         }
 }
 
@@ -380,6 +396,7 @@ void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
         if (filterTypeIsChecked && state == true)
                 filterBox->enable(true);
         oscillator->enable(state);
+        oscillator->saveToUndo();
 }
 
 void OscillatorGroupBox::updateGui()

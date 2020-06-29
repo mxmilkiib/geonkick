@@ -69,6 +69,7 @@ class KitModel : public RkObject {
         bool isPercussionSolo(PercussionIndex index) const;
         void updatePercussion(PercussionIndex index);
         GeonkickApi* getApi() const;
+        void saveToUndo();
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),

@@ -26,6 +26,8 @@
 
 #include "globals.h"
 
+#include <deque>
+
 #include <RkRealPoint.h>
 
 class Oscillator;
@@ -33,6 +35,8 @@ class PercussionState;
 class KitState;
 class RkEventQueue;
 class PresetFolder;
+
+constexpr size_t GKICK_UNDO_STACK_SIZE = 100;
 
 class GeonkickApi : public RkObject {
 
@@ -294,6 +298,8 @@ class GeonkickApi : public RkObject {
   bool moveOrdrepedPercussionId(int index, int n);
   PresetFolder* getPresetFolder(size_t index) const;
   size_t numberOfPresetFolders() const;
+  void saveToUndoStack();
+  void undoState();
 
 protected:
   void setupDataPaths();
@@ -341,6 +347,8 @@ private:
   std::unordered_map<std::string, std::string> apiSettings;
   std::vector<int> percussionIdList;
   std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
+  std::deque<std::unique_ptr<KitState>> undoStack;
+  size_t undoStackIndex;
 };
 
 #endif // GEONKICK_API_H

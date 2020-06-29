@@ -35,6 +35,7 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
           , hideEnvelope{false}
           , kickGraphImage{nullptr}
           , kickGraphics{nullptr}
+          , pointMoved{false}
 {
         setFixedSize(850, 300);
         int padding = 50;
@@ -131,6 +132,7 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(RkMouseEvent *event)
         if (event->button() == RkMouseEvent::ButtonType::Right) {
                 if (currentEnvelope) {
                         currentEnvelope->removePoint(point);
+                        geonkickApi->saveToUndoStack();
                         update();
                 }
         } else {
@@ -153,6 +155,10 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(RkMouseEvent *event)
         auto toUpdate = false;
         if (currentEnvelope->hasSelected()) {
                 currentEnvelope->unselectPoint();
+                if (pointMoved) {
+                        geonkickApi->saveToUndoStack();
+                        pointMoved = false;
+                }
                 toUpdate = true;
         }
 
@@ -170,6 +176,7 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
                 if (currentEnvelope) {
                         currentEnvelope->addPoint(point);
                         currentEnvelope->selectPoint(point);
+                        geonkickApi->saveToUndoStack();
                         update();
                 }
         }
@@ -183,6 +190,7 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
         RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
         if (currentEnvelope->hasSelected()) {
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
+                pointMoved = true;
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
                 update();

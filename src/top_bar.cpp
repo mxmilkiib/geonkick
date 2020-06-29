@@ -145,7 +145,8 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         tuneCheckbox->show();
         RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi,
 		    tuneAudioOutput(geonkickApi->currentPercussion(), b));
-
+        RK_ACT_BIND(tuneCheckbox, released, RK_ACT_ARGS(), geonkickApi,
+		    saveToUndoStack());
         updateGui();
 }
 
@@ -182,7 +183,13 @@ void TopBar::createLyersButtons()
         RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b),
                     geonkickApi, enbaleLayer(GeonkickApi::Layer::Layer3, b));
         RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b),
-                    geonkickApi, enbaleLayer(GeonkickApi::Layer::Layer2, b));
+                    geonkickApi, saveToUndoStack());
+        RK_ACT_BIND(layer1Button, released, RK_ACT_ARGS(),
+                    geonkickApi, saveToUndoStack());
+        RK_ACT_BIND(layer3Button, released, RK_ACT_ARGS(),
+                    geonkickApi, saveToUndoStack());
+        RK_ACT_BIND(layer2Button, released, RK_ACT_ARGS(),
+                    geonkickApi, saveToUndoStack());
 }
 
 void TopBar::setPresetName(const std::string &name)

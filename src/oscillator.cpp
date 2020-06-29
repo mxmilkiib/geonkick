@@ -207,3 +207,8 @@ std::string Oscillator::samplesPath() const
 {
         return geonkickApi->currentWorkingPath("Samples");
 }
+
+void Oscillator::saveToUndo()
+{
+        geonkickApi->saveToUndoStack();
+}

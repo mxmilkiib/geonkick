@@ -230,10 +230,14 @@ void KitPercussionView::setModel(PercussionModel *model)
                     percussionModel, decreasePercussionChannel());
         RK_ACT_BIND(removeButton, released, RK_ACT_ARGS(), this, remove());
         RK_ACT_BIND(copyButton, released, RK_ACT_ARGS(), percussionModel, copy());
+        RK_ACT_BIND(copyButton, released, RK_ACT_ARGS(), percussionModel, saveToUndo());
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), percussionModel, play());
         RK_ACT_BIND(muteButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, mute(toggled));
+        RK_ACT_BIND(muteButton, released, RK_ACT_ARGS(), percussionModel, saveToUndo());
         RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, solo(toggled));
+        RK_ACT_BIND(soloButton, released, RK_ACT_ARGS(), percussionModel, saveToUndo());
         RK_ACT_BIND(limiterSlider, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
+        RK_ACT_BIND(limiterSlider, released, RK_ACT_ARGS(), percussionModel, saveToUndo());
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
         RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
         RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiterSlider, onSetValue(val));
@@ -253,8 +257,10 @@ PercussionModel* KitPercussionView::getModel()
 
 void KitPercussionView::remove()
 {
-        if (getModel())
+        if (getModel()) {
                 getModel()->remove();
+                getModel()->saveToUndo();
+        }
 }
 
 void KitPercussionView::paintWidget(RkPaintEvent *event)
@@ -317,8 +323,9 @@ void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)
                 int rightLimit = nameWidth + keyWidth * percussionModel->keysNumber();
                 if (event->x() <= leftLimit)
                         percussionModel->select();
-                else if (event->x() > leftLimit && event->x() < rightLimit)
+                else if (event->x() > leftLimit && event->x() < rightLimit) {
                         percussionModel->setKey((event->x() - nameWidth) / keyWidth);
+                }
         }
 }
 

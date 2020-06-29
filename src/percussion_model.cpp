@@ -185,3 +185,8 @@ void PercussionModel::copy()
 {
         kitModel->copyPercussion(index());
 }
+
+void PercussionModel::saveToUndo()
+{
+        kitModel->saveToUndo();
+}

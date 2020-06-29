@@ -52,6 +52,7 @@ class Filter: public GeonkickWidget
         RK_DECL_ACT(typeChanged, typeChanged(GeonkickApi::FilterType type),
                     RK_ARG_TYPE(GeonkickApi::FilterType),
                     RK_ARG_VAL(type));
+        RK_DECL_ACT(released, released(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
         void setFilterType(GeonkickApi::FilterType type, bool b);

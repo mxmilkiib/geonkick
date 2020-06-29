@@ -115,6 +115,7 @@ void Knob::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         RK_UNUSED(event);
         isSelected = false;
+        action released();
 }
 
 void Knob::mouseMoveEvent(RkMouseEvent *event)

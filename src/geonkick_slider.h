@@ -43,6 +43,8 @@ class GeonkickSlider: public GeonkickWidget
         void onSetValue(int value);
         RK_DECL_ACT(valueUpdated, valueUpdated(int value),
                     RK_ARG_TYPE(int), RK_ARG_VAL(value));
+        RK_DECL_ACT(released, released(),
+                    RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
         int  calculateValue(int x, int y);

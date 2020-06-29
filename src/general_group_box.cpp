@@ -76,6 +76,11 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
                     RK_ACT_ARGS(double val),
                     geonkickApi,
                     setKickAmplitude(val));
+        RK_ACT_BIND(kickAmplitudeKnob,
+                    released,
+                    RK_ACT_ARGS(),
+                    geonkickApi,
+                    saveToUndoStack());
 
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
         kickLengthKnob->setFixedSize(80, 80);
@@ -89,6 +94,11 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
                     RK_ACT_ARGS(double val),
                     geonkickApi,
                     setKickLength(val));
+        RK_ACT_BIND(kickLengthKnob,
+                    released,
+                    RK_ACT_ARGS(),
+                    geonkickApi,
+                    saveToUndoStack());
 }
 
 void GeneralGroupBox::createFilterHBox()
@@ -106,6 +116,9 @@ void GeneralGroupBox::createFilterHBox()
         RK_ACT_BIND(filterBox, typeChanged,
                     RK_ACT_ARGS(GeonkickApi::FilterType type),
                     geonkickApi, setKickFilterType(type));
+        RK_ACT_BIND(filterBox, released,
+                    RK_ACT_ARGS(),
+                    geonkickApi, saveToUndoStack());
 }
 
 void GeneralGroupBox::updateGui()
