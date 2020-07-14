@@ -40,28 +40,27 @@
 ### Introduction
 
 Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion
-synthesizer, currently available only for GNU/Linux. It can synthesize elements of percussion.
-The most basic examples are: kicks, snares, hit-hats, shakers, claps. Geonkick is released
-under The GNU General Public License version 3. Developed in C and C++ and uses CMake
-build system. Can be used as standalone and LV2 plugin.
+synthesizer, currently available only for GNU/Linux. It can produce drum
+elements such as kicks, snares, hit-hats, shakers, claps. Geonkick is released
+under The GNU General Public License version 3, developed in C and C++ and
+uses the CMake build system. Geonkick can be used as standalone application
+or as an LV2 plugin.
 
 ### How it works
 
-Geonkick synthesizes the full percussion length in a buffer in the memory
-every time the user changes the controls or the envelopes. The generated
-percussion then is "moved" to a module that plays the percussion. There
+Geonkick synthesizes the full percussion sample into a memory buffer
+every time a control or envelope is altered by the user. The generated
+percussion sound is then "moved" to a module that plays that sound. There
 is no synthesis happening when the user presses a key, i.e if no controls
 are changed Geonkick acts just like a sampler.
 
-There is also a list of synthesized percussion that make Geonkick to act
-like a percussion kit with key mappings. Percussion UI (main window) actually
-is like an "editor" for the selected percussion from the kit list.
+There is also a list of synthesized percussion that makes Geonkick act
+like a percussion kit with key mappings. The percussion UI (main window) is
+actually like an "editor" for the selected percussion from the kit list.
 
-Every percussion from the kit list is mono. The percussion can be redirected
-to audio output to one of 16 supported audio output channels. Thus, every
-channel is mono too. The user can redirect than a mono channel to two channels
-or more by means of hosts, audio basses or other ways, depending of the
-context of usage.
+Each percussion from the kit list is mono and can be redirected to one
+of 16 audio outputs. The user can redirect a mono channel to two channels
+or more by means of a mixer, DAW, or application featuring audio busses.
 
 ### Block diagram
 
